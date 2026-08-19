@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neel's Jungle Safari - 1st Birthday!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Fredoka+One&display=swap');
+
+        :root {
+            --primary: #1b5e20; /* Deep Jungle Green */
+            --secondary: #e65100; /* Tiger Orange */
+            --accent: #ffeb3b; /* Sun Yellow */
+            --bg: #dcedc8; /* Light leaf green */
+            --card-bg: #fdf5e6; /* Safari Khaki */
+            --text: #3e2723; /* Bark Brown */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Baloo 2', sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(#81c784 15%, transparent 15%), 
+                radial-gradient(#81c784 15%, transparent 15%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: var(--text);
+            overflow: hidden; 
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Intro Screen (Page 1) --- */
+        #intro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            display: flex;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .gate {
+            width: 50%;
+            height: 100%;
+            /* Bamboo texture look */
+            background: repeating-linear-gradient(
+                90deg,
+                #2e7d32,
+                #2e7d32 20px,
+                #1b5e20 20px,
+                #1b5e20 40px
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            position: relative;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .gate-left {
+            border-right: 8px solid #0a330c;
+        }
+
+        .gate-right {
+            border-left: 8px solid #0a330c;
+        }
+
+        .intro-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 101;
+            pointer-events: none;
+            width: 100%;
+        }
+
+        .intro-text {
+            font-family: 'Fredoka One', cursive;
+            color: var(--accent);
+            font-size: 3.5em;
+            text-shadow: 4px 4px 0 #1b5e20, -2px -2px 0 #1b5e20;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .start-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: 4px dashed white;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            animation: pulse 1.5s infinite;
+        }
+
+        .open-left { transform: translateX(-100%); }
+        .open-right { transform: translateX(100%); }
+        .fade-out { opacity: 0; transition: opacity 0.5s 1.5s; }
+
+        /* --- Main Content Container --- */
+        #main-content {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+            width: 95%;
+            max-width: 480px;
+            height: 95vh;
+            max-height: 850px;
+            background: var(--card-bg);
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 10;
+            overflow: hidden; 
+            border: 12px solid var(--primary);
+        }
+
+        #main-content.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- Slider System (Page 2 & 3) --- */
+        .slider-wrapper {
+            display: flex;
+            width: 200%; 
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide {
+            width: 50%; 
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .slide::-webkit-scrollbar { width: 6px; }
+        .slide::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+
+        /* --- Slide 1 (Page 2): Invitation Details --- */
+        .header {
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(135deg, var(--primary), #388e3c);
+            color: white;
+            padding: 40px 20px 55px;
+            text-align: center;
+            border-radius: 15px 15px 50% 50%;
+            position: relative;
+            border-bottom: 8px dashed var(--accent);
+        }
+
+        .animal-decor {
+            font-size: 2.5em;
+            position: absolute;
+            top: 20px;
+            animation: swing 3s infinite ease-in-out alternate;
+            transform-origin: top center;
+        }
+        .monkey { left: 20px; }
+        .toucan { right: 20px; animation-delay: 1s; }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.5em;
+            line-height: 1;
+            margin-bottom: 5px;
+            color: var(--accent);
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.4em;
+            font-weight: 800;
+            margin-top: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .primary-image-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: -45px;
+            position: relative;
+            z-index: 5;
+            padding: 0 20px;
+        }
+
+        .primary-image-wrapper img {
+            width: 100%;
+            max-width: 300px;
+            height: 250px; 
+            border-radius: 20px;
+            border: 8px solid var(--secondary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: white;
+            object-fit: cover;
+            transform: rotate(-3deg);
+            transition: transform 0.3s;
+        }
+        .primary-image-wrapper img:hover { transform: rotate(0deg) scale(1.05); }
+
+        .date-block {
+            background: var(--secondary);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 25px 20px;
+            text-align: center;
+            transform: rotate(2deg);
+            box-shadow: 0 5px 15px rgba(230, 81, 0, 0.4);
+            border: 3px dashed white;
+            position: relative;
+        }
+
+        /* Tiger stripes effect on date block */
+        .date-block::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .date-block h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.4em;
+            line-height: 1.1;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .date-block p {
+            font-size: 1.4em;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        /* --- Slide 2 (Page 3): Location & RSVP --- */
+        .location-header {
+            background: var(--primary);
+            color: var(--accent);
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 15px 15px 0 0;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            border-bottom: 6px solid var(--secondary);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+        }
+
+        .location-block {
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px dashed var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 20px 20px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .location-block h4 {
+            font-size: 1.8em;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .countdown-container {
+            background: #fff8e1;
+            border: 4px solid var(--primary);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 0 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .countdown-container h3 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            font-weight: 800;
+        }
+
+        .time-box span:first-child { font-size: 1.8em; font-family: 'Fredoka One', cursive; color: var(--secondary);}
+        .time-box span:last-child { font-size: 0.9em; text-transform: uppercase; color: #795548;}
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 25px;
+            font-size: 1.3em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
+            width: calc(100% - 40px);
+            margin: 0 auto 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.2);
+        }
+        
+        .next-btn { background: var(--primary); border: 3px solid #81c784;}
+        .map-btn { background: #1976d2; border: 3px solid #64b5f6;}
+        .rsvp-btn { background: #25D366; border: 3px solid #81c784;} 
+        
+        .back-btn { 
+            background: transparent; 
+            color: var(--text); 
+            box-shadow: none; 
+            font-size: 1.1em;
+            margin-top: -10px;
+            border: 2px solid var(--text);
+        }
+        .back-btn:active { transform: scale(0.95); }
+
+        /* Falling Leaves Background */
+        .falling-leaves {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+        .leaf {
+            position: absolute; font-size: 2em;
+            animation: fall linear infinite; opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes pulse-slight { 0%, 100% { transform: scale(1) rotate(2deg); } 50% { transform: scale(1.02) rotate(2deg); } }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes swing { 0% { transform: rotate(10deg); } 100% { transform: rotate(-10deg); } }
+
+        #confetti {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999;
+        }
+        
+        .jungle-footer {
+            text-align: center;
+            font-size: 2em;
+            letter-spacing: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Falling Leaves Background -->
+    <div class="falling-leaves" id="leaves-container"></div>
+
+    <!-- Intro Gates (PAGE 1) -->
+    <div id="intro-screen" onclick="openGates()">
+        <div class="gate gate-left" id="leftGate"></div>
+        <div class="gate gate-right" id="rightGate"></div>
+        <div class="intro-content" id="introContent">
+            <div class="intro-text">NEEL'S<br>SAFARI</div>
+            <button class="start-btn">TAP TO ENTER 🐾</button>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content">
+        
+        <div class="slider-wrapper" id="slider">
+            
+            <!-- SLIDE 1 (PAGE 2): Photo & Date -->
+            <div class="slide">
+                <div class="header">
+                    <div class="animal-decor monkey">🐒</div>
+                    <div class="animal-decor toucan">🦜</div>
+                    <h1>ROAR!</h1>
+                    <p>You're invited to Neel's 1st Birthday!</p>
+                </div>
+                
+                <div class="primary-image-wrapper">
+                    <!-- Updated Photo File Name -->
+                    <img src="Neel Birthday Safari.jpeg" alt="Neel Birthday Safari">
+                </div>
+
+                <div class="date-block">
+                    <h3 style="font-size: 1.2em; font-family: 'Baloo 2', sans-serif; text-transform: uppercase; margin-bottom: 5px; text-shadow: none;">Join the wild adventure on</h3>
+                    <h3>27th SEPT</h3>
+                    <p>⏰ 1:00 PM - 3:00 PM</p>
+                </div>
+
+                <button class="btn next-btn" onclick="nextSlide()">See Location & RSVP ➡️</button>
+                <div class="jungle-footer">🦓🐘🐅</div>
+            </div>
+
+            <!-- SLIDE 2 (PAGE 3): Location & RSVP -->
+            <div class="slide">
+                <div class="location-header">Party Details 🌴</div>
+
+                <div class="location-block">
+                    <h4>📍 Aangan Heritage</h4>
+                    <p style="font-size: 1.2em; font-weight: 600; color: #555;">Gate No. 4, Bhubaneswar</p>
+                </div>
+
+                <a href="https://maps.app.goo.gl/gWHXk5TTcsErBz7n9" target="_blank" class="btn map-btn">
+                    🗺️ Open in Google Maps
+                </a>
+
+                <div class="countdown-container">
+                    <h3>Adventure Begins In:</h3>
+                    <div class="timer">
+                        <div class="time-box"><span id="days">00</span><br><span>Days</span></div>
+                        <div class="time-box"><span id="hours">00</span><br><span>Hrs</span></div>
+                        <div class="time-box"><span id="mins">00</span><br><span>Mins</span></div>
+                        <div class="time-box"><span id="secs">00</span><br><span>Secs</span></div>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/919938984453?text=Hi!%20We%20would%20love%20to%20join%20Neel's%20Jungle%20Safari%201st%20Birthday%20on%2027th%20Sept!" 
+                   target="_blank" class="btn rsvp-btn" onclick="fireConfetti(event)">
+                    🐘 RSVP on WhatsApp
+                </a>
+
+                <button class="btn back-btn" onclick="prevSlide()">⬅️ Back to Invitation</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <canvas id="confetti"></canvas>
+
+    <script>
+        function openGates() {
+            document.getElementById('leftGate').classList.add('open-left');
+            document.getElementById('rightGate').classList.add('open-right');
+            document.getElementById('introContent').style.display = 'none';
+            document.getElementById('intro-screen').classList.add('fade-out');
+            
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('main-content').classList.add('show');
+            }, 500);
+        }
+
+        function nextSlide() {
+            document.getElementById('slider').style.transform = 'translateX(-50%)';
+        }
+
+        function prevSlide() {
+            document.getElementById('slider').style.transform = 'translateX(0)';
+        }
+
+        const targetDate = new Date("September 27, 2026 13:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("mins").innerText = "00";
+                document.getElementById("secs").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("mins").innerText = mins.toString().padStart(2, '0');
+            document.getElementById("secs").innerText = secs.toString().padStart(2, '0');
+        }, 1000);
+
+        const leavesContainer = document.getElementById('leaves-container');
+        const leafEmojis = ['🌿', '🍃', '🌴', '🦜', '🦋'];
+        for (let i = 0; i < 20; i++) {
+            let leaf = document.createElement('div');
+            leaf.classList.add('leaf');
+            leaf.innerText = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.animationDuration = (Math.random() * 6 + 4) + 's';
+            leaf.style.animationDelay = (Math.random() * 5) + 's';
+            leaf.style.fontSize = (Math.random() * 1 + 1.5) + 'em';
+            leavesContainer.appendChild(leaf);
+        }
+
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+
+        function fireConfetti(event) {
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2 + 100,
+                    r: Math.random() * 8 + 3,
+                    dx: Math.random() * 12 - 6,
+                    dy: Math.random() * -12 - 6,
+                    color: ['#ffeb3b', '#ff9800', '#4caf50', '#8bc34a', '#e65100'][Math.floor(Math.random() * 5)]
+                });
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            requestAnimationFrame(animateConfetti);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.dy += 0.4; 
+                p.x += p.dx;
+                p.y += p.dy;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                if(p.y > canvas.height) particles.splice(index, 1);
+            });
+        }
+    </script>
+</body>
+</html>
