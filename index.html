@@ -54,7 +54,6 @@
         .gate {
             width: 50%;
             height: 100%;
-            /* Bamboo texture look */
             background: repeating-linear-gradient(
                 90deg,
                 #2e7d32,
@@ -232,7 +231,6 @@
             position: relative;
         }
 
-        /* Tiger stripes effect on date block */
         .date-block::before {
             content: '';
             position: absolute;
@@ -385,6 +383,12 @@
 </head>
 <body>
 
+    <!-- Background Audio Element -->
+    <audio id="bg-music" loop>
+        <!-- Ensure you have a file named 'birthday_music.mp3' in the same folder -->
+        <source src="birthday_music.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Falling Leaves Background -->
     <div class="falling-leaves" id="leaves-container"></div>
 
@@ -413,7 +417,6 @@
                 </div>
                 
                 <div class="primary-image-wrapper">
-                    <!-- Updated Photo File Name -->
                     <img src="Neel Birthday Safari.jpeg" alt="Neel Birthday Safari">
                 </div>
 
@@ -466,11 +469,18 @@
 
     <script>
         function openGates() {
+            // Open the visual gates
             document.getElementById('leftGate').classList.add('open-left');
             document.getElementById('rightGate').classList.add('open-right');
             document.getElementById('introContent').style.display = 'none';
             document.getElementById('intro-screen').classList.add('fade-out');
             
+            // Play the background music
+            const music = document.getElementById('bg-music');
+            if(music) {
+                music.play().catch(e => console.log("Audio play failed: ", e));
+            }
+
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 document.getElementById('main-content').classList.add('show');
